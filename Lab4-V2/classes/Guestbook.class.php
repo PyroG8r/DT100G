@@ -24,7 +24,7 @@ class Guestbook {
         $sql = "INSERT INTO guestbook (name, message, date) VALUES ('" . $name . "', '" . $message . "', '" . $date . "')";
         $this->db->query($sql);
 
-
+        //Preferred way to do it, prevents sql injection
         /*//prepare sql statement using prepared statements
         $sql = "INSERT INTO guestbook (name, message, date) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($sql);

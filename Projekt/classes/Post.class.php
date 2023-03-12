@@ -3,30 +3,35 @@ declare(strict_types=1); // Check for type cast problems
 error_reporting(E_ALL); // Report and exit for all errors
 
 class Post {
-    public function __construct(string $uid, string $name, string $message, string $date) {
-        $this->uid = $uid;
+    public function __construct(string $pid, string $name, string $description, string $text, string $date) {
+        $this->pid = $pid;
         $this->name = $name;
-        $this->message = $message;
+        $this->description = $description;
+        $this->text = $text;
         $this->date = $date;
     }
 
-    public function getUid() {
-        return $this->uid;
+    public function getPid() {
+        return $this->pid;
     }
 
     public function getName() {
         return $this->name;
     }
     public function getMessage() {
-        return $this->message;
+        return $this->description;
+    }
+    public function getText() {
+        return $this->text;
     }
     public function getDate() {
         return $this->date;
     }
 
-    private $uid;
+    private $pid;
     private $name;
-    private $message;
+    private $description;
+    private $text;
     private $date;
 
 
