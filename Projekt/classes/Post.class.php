@@ -18,7 +18,7 @@ class Post {
     public function getName() {
         return $this->name;
     }
-    public function getMessage() {
+    public function getDescription() {
         return $this->description;
     }
     public function getText() {

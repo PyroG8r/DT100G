@@ -25,6 +25,7 @@ body {
 }
 
 #mainheader h1 { margin: 0 0 0 1em; float: left; }
+.headerlinks { float: right; margin: 0 1em 0 0; }
 
 
 
@@ -39,15 +40,16 @@ body {
     border: 1px solid #28292a;
 }
 
-.left {
-    float: left;
-    width: 24%;
-    margin-right: 2%;
+.center { 
+    margin: 1em auto 1em auto;
+    width: 80%; 
 }
-.right { 
-    float: left;
-    width: 74%;
+
+/*.newpost {
+    
 }
+.postdisplay { 
+}*/
 
 #inlägg article {
     border-bottom: 1px solid #ccc;
@@ -60,7 +62,7 @@ body {
 h1, h2, h3, h4, h5, h6 { font-weight: bold; }
 h1 { margin-bottom: 1em; }
 h2 { font-size: 28px; margin-top: 8px; margin-bottom: 16px; } 
-h3 { font-size: 20px; margin-top: 6px; margin-bottom: 6px; color: #e35151; } 
+h3 { font-size: 20px; margin-top: 6px; margin-bottom: 6px;  } 
 h4 { font-size: 16px; font-weight: 500; margin-top: 4px; margin-bottom: 4px; }
 
 footer { clear: both; padding: 2em 0 0 0; font-size: 0.825em; color: #666; text-align: center; }
@@ -118,8 +120,8 @@ input[type="text"], input[type="password"] {
 }
 
 textarea {
-    max-width: 17em;
-    min-width: 4em;
+    max-width: 100%;
+    min-width: 100%;
     min-height: 5em;
 
     padding: 5px;
@@ -131,13 +133,37 @@ textarea {
   }
 
 /* Div with rounded corners and a dropshadow */
-.post {
+.postBox {
     border-radius: 4px;
     background-color: rgb(32, 34, 36);
     box-shadow: 0 0 10px -2px black;
     padding: 10px;
     margin-bottom: 10px;
   }
+.post{
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #232324;
+    border-radius: 5px;
+}
+
+.post a.tag{
+  color: #ff9060;
+  font-size: 0.8em;
+  margin: 0 0 0 1em;
+  float: right; margin: 0 1em 0 0;
+}
+
+.postInfo p#postDate{
+    font-size: 0.8em;
+    float: right; margin: 0 1em 0 0;
+}
+.post h3{
+    color: #e35151;
+}
+
+
+
 
 
 /* If form-control is-invalid is set  */
@@ -148,3 +174,59 @@ textarea {
 .invalid-feedback {
     color: #dc3545;
 }
+
+
+
+
+.dropdown-check-list {
+    display: inline-block;
+  }
+  
+  .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+    color: #ff9060;
+  }
+  
+  .dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  
+  .dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+  }
+  
+  .dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
+  .dropdown-check-list ul.items li {
+    list-style: none;
+  }
+  
+  .dropdown-check-list.visible .anchor {
+    color: #ff9060;
+  }
+  
+  .dropdown-check-list.visible .items {
+    display: block;
+  }

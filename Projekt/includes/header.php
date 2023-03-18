@@ -10,10 +10,12 @@
 <body>
     <header id="mainheader">
         <div class="headercontainer">
-            <h1 id="logo">Visitors</h1>
+        <a href="index.php"><h1 id="logo">Veckologgen</h1></a>
             <div class="headerlinks">
-                <a href="index.php">Home</a>
-                <a href="includes/logout.inc.php">Logout</a>
+                <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) { ?>
+                    <a href="logout.inc.php"><h3>Logga ut</h1></a>
+                <?php }?>
+
         </div>
     </header>
     <!-- Start of main container -->

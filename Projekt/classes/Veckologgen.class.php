@@ -15,11 +15,25 @@ class Veckologgen {
     }
 
     //add new post to db and update the file
-    public function newPost($uid, $message, $date) {
+    public function newPost($uid, $description, $message, $date, $tags) {
         $sql = "INSERT INTO posts(uid, description, text, date) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("isss", $uid, $message, $message, $date);
+        $stmt->bind_param("isss", $uid, $description, $message, $date);
         $stmt->execute();
+
+        //if tags are set, add them to the tags table
+        if (isset($tags)) {
+            // update tags table with new post tags
+            $pid = $this->db->insert_id;
+            // for loop to add all tags to the tags table
+            for ($i = 0; $i < count($tags); $i++) {
+                $sql = "INSERT INTO taggedposts(tagid, pid) VALUES (?, ?)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param("ii", $tags[$i], $pid);
+                $stmt->execute();
+            }
+        }
+
     }
 
     //delete post from posts array delete post from database
@@ -30,7 +44,7 @@ class Veckologgen {
 
     public function getPosts() {
         //join posts and users table
-        $sql = "SELECT posts.pid, posts.description, posts.text, posts.date, users.username FROM posts INNER JOIN users ON posts.uid = users.uid ORDER BY posts.pid DESC";
+        $sql = "SELECT posts.pid, posts.description, posts.text, posts.date, users.username FROM posts INNER JOIN users ON posts.uid = users.uid ORDER BY posts.pid ASC";
         
         //get result from query
         $result = $this->db->query($sql);
@@ -43,6 +57,32 @@ class Veckologgen {
         return $posts;
          
         
+    }
+
+    public function newTags($tags) {
+        // for loop to add all tags to the tags table
+        // return array of tag ids
+        $tagids = array();
+        for ($i = 0; $i < count($tags); $i++) {
+            $sql = "INSERT INTO tags(name) VALUES (?)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("s", $tags[$i]);
+            $stmt->execute();
+            array_push($tagids, $this->db->insert_id);
+        }
+        return $tagids;
+        
+        
+    }
+
+    public function getTags($pid) {
+        $sql = "SELECT tags.name FROM tags INNER JOIN taggedposts ON tags.tagid = taggedposts.tagid WHERE taggedposts.pid = " . $pid;
+        $result = $this->db->query($sql);
+        $tags = array();
+        while ($row = $result->fetch_assoc()) {
+            array_push($tags, $row['name']);
+        }
+        return $tags;
     }
 
     

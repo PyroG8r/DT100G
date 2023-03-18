@@ -22,18 +22,31 @@ if (isset($_POST['addPost'])) {
     //add new post to guestbook
     //get user id from session
     $uid = $_SESSION['uid'];
-    $veckologgen->newPost($uid, $_POST['message'], date('Y-m-d H:i:s'));
+
+    //check if new tags are added
+    if (isset($_POST['addTag'])) {
+        $_POST['tags'] = array_merge($_POST['tags'], $veckologgen->newTags($_POST['addTag']));
+    }
+
+
+    //check if tags are selected
+    if (isset($_POST['tags'])) {
+        $veckologgen->newPost($uid, $_POST['description'], $_POST['message'], date('Y-m-d H:i:s'), $_POST['tags']);
+    } else {
+        $veckologgen->newPost($uid, $_POST['description'], $_POST['message'], date('Y-m-d H:i:s'), array());
+    }
     
-    //unset post variable
-    unset($_POST['addPost']);
+    
 }
 
 
 //Delete post with index i, if button is pressed
 if (isset($_POST['deletePost'])) {
     $veckologgen->deletePost($_POST['deletePost']);
-    unset($_POST['deletePost']);
 }
+
+
+
 ?>
 
 
@@ -44,15 +57,51 @@ if (isset($_POST['deletePost'])) {
 <?php
 include("includes/header.php");
 ?>
-<h2>Veckologgen</h2>
+<div class="postdisplay center">
+    <h2>Inlägg</h2>
+    <!-- The logged in users name -->
+    <p class="username">Inloggad som: <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
 
-<div class="left">
+
+
+    <div id="inlägg">
+        <?php include('includes/displayPosts.php'); ?>
+    </div>
+    <!-- /#inlägg -->
+</div>
+<!-- /.right -->
+
+<div class="newpost center">
     <form id="form" action="index.php" method="post">
-        
-            
-
             <label for="message">Meddelande</label> <br>
+            <input type="text" id="description" name="description" placeholder="Beskrivning" required> <br>
+
+            <!-- multiple choice dropdown menu for selecting tags -->
+            <div id="list1" class="dropdown-check-list" tabindex="100">
+                <span class="anchor">Välj taggar</span>
+                <ul class="items">
+                    <?php
+                    //get all tags from database
+                    $sql = "SELECT * FROM tags";
+                    $result = $db->query($sql);
+                    //loop through tags and add to dropdown menu
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<li><input type='checkbox' name='tags[]' value='" . $row['tagid'] . "' id='" . $row['tagid'] . "'/>";
+                        echo "<label for='" . $row['tagid'] . "'>" . $row['name'] . "</label></li>";
+                    }
+                    ?>
+                </ul>
+                
+            </div>
+
+            <!-- Text box for adding tags and a button for adding more text boxes -->
+            <div id="addTag">
+                <button id="addtagBtn" class="btn">Lägg till en till</button>
+                <input type="text" id="addTagText" name="addTag[]" placeholder="Lägg till tagg"> <br>
+            </div>
+            <!-- textarea for post message -->
             <textarea id="message" name="message" placeholder="Ditt meddelande" required></textarea>
+
 
             <input class="btn" type="submit" name="addPost" value="Skapa Inlägg">
     </form>
@@ -60,14 +109,7 @@ include("includes/header.php");
 </div>
 <!-- /.left -->
 
-<div class="right">
-    <h2>Inlägg</h2>
-    <div id="inlägg">
-        <?php include('includes/displayPosts.php'); ?>
-    </div>
-    <!-- /#inlägg -->
-</div>
-<!-- /.right -->
+
 
 <?php
 include("includes/footer.php");
