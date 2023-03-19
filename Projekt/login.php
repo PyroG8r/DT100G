@@ -5,9 +5,9 @@ $page_title = "Login";
 include("config/config.php");
 include("includes/header.php");
 ?>
-<div class="login">
+<div class="login center">
 <h2>Logga in</h2>
-        <p>Skriv in ditt användar id, lösenord.</p>
+        <p>Skriv in ditt användarnamn, lösenord.</p>
 
         <?php 
         if(!empty($login_err)){
@@ -17,17 +17,17 @@ include("includes/header.php");
 
         <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label>Användar Id</label>
-                <input type="text" name="username" class="form-control <?= (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?= $username; ?>">
+                <label for="username">Användarnamn</label>
+                <input type="text" name="username" id="username" class="form-control <?= (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?= $username; ?>">
                 <span class="invalid-feedback"><?= $username_err; ?></span>
             </div>    
             <div class="form-group">
-                <label>Lösenord</label>
-                <input type="password" name="password" class="form-control <?= (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                <label for="password">Lösenord</label>
+                <input type="password" name="password" id="password" class="form-control <?= (!empty($password_err)) ? 'is-invalid' : ''; ?>">
                 <span class="invalid-feedback"><?= $password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn" value="Login">
             </div>
             <p>Har du inte ett konto ännu? <a href="signup.php">Signa upp</a>.</p>
         </form>

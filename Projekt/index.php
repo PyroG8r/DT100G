@@ -9,11 +9,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 $page_title = "Inlägg";
 include("config/config.php");
-
-
-
-
-//Create new instance of guestbook class and add new post if content from form is filled
 require_once 'classes/Veckologgen.class.php';
 require_once 'config/databaseconfig.php';
 
@@ -23,17 +18,18 @@ if (isset($_POST['addPost'])) {
     //get user id from session
     $uid = $_SESSION['uid'];
 
+    $newTagIds = array();
     //check if new tags are added
-    if (isset($_POST['addTag'])) {
-        $_POST['tags'] = array_merge($_POST['tags'], $veckologgen->newTags($_POST['addTag']));
+    if (isset($_POST['addTag']) && $_POST['addTag'][0] != "") {
+        //add new tags to database
+        $newTagIds = $veckologgen->newTags($_POST['addTag']);
     }
-
-
     //check if tags are selected
     if (isset($_POST['tags'])) {
+        $_POST['tags'] = array_merge($newTagIds, $_POST['tags']);
         $veckologgen->newPost($uid, $_POST['description'], $_POST['message'], date('Y-m-d H:i:s'), $_POST['tags']);
     } else {
-        $veckologgen->newPost($uid, $_POST['description'], $_POST['message'], date('Y-m-d H:i:s'), array());
+        $veckologgen->newPost($uid, $_POST['description'], $_POST['message'], date('Y-m-d H:i:s'), $newTagIds);
     }
     
     
@@ -45,13 +41,7 @@ if (isset($_POST['deletePost'])) {
     $veckologgen->deletePost($_POST['deletePost']);
 }
 
-
-
 ?>
-
-
-
-
 
 
 <?php
@@ -73,7 +63,7 @@ include("includes/header.php");
 
 <div class="newpost center">
     <form id="form" action="index.php" method="post">
-            <label for="message">Meddelande</label> <br>
+            <label for="description">Beskrivning</label> <br>
             <input type="text" id="description" name="description" placeholder="Beskrivning" required> <br>
 
             <!-- multiple choice dropdown menu for selecting tags -->
@@ -86,7 +76,7 @@ include("includes/header.php");
                     $result = $db->query($sql);
                     //loop through tags and add to dropdown menu
                     while ($row = $result->fetch_assoc()) {
-                        echo "<li><input type='checkbox' name='tags[]' value='" . $row['tagid'] . "' id='" . $row['tagid'] . "'/>";
+                        echo "<li><input type='checkbox' name='tags[]' value='" . $row['tagid'] . "' id='" . $row['tagid'] . "'>";
                         echo "<label for='" . $row['tagid'] . "'>" . $row['name'] . "</label></li>";
                     }
                     ?>
@@ -96,10 +86,13 @@ include("includes/header.php");
 
             <!-- Text box for adding tags and a button for adding more text boxes -->
             <div id="addTag">
-                <button id="addtagBtn" class="btn">Lägg till en till</button>
-                <input type="text" id="addTagText" name="addTag[]" placeholder="Lägg till tagg"> <br>
+                <button type="button" id="addtagBtn" class="btn">Lägg till en till</button>
+                <label for="addTagText">Lägg till tagg</label>
+                <input type="text" id="addTagText" name="addTag[]" placeholder="Ny tagg"> <br>
+                
             </div>
             <!-- textarea for post message -->
+            <label for="message">Meddelande</label> <br>
             <textarea id="message" name="message" placeholder="Ditt meddelande" required></textarea>
 
 

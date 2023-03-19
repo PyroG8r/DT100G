@@ -230,3 +230,13 @@ textarea {
   .dropdown-check-list.visible .items {
     display: block;
   }
+
+  .form-group {
+    display: table-row;
+    line-height: 2.2;
+  }
+  .form-group label {
+      display: table-cell;
+      /* border spacing to 20px */
+      padding: 0 20px;
+  }

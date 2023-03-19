@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /login.php
+Sitemap: http://studenter.miun.se/~emjo2109/DT100G/Projekt/sitemap.xml
